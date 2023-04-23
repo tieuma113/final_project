@@ -1,0 +1,40 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="local.d_busModel">
+    <property name="title" type="s" access="read"/>
+    <property name="artist" type="s" access="read"/>
+    <property name="visible" type="b" access="read"/>
+    <property name="videoName" type="s" access="read"/>
+    <signal name="SettingChanged">
+      <arg name="language" type="i" direction="out"/>
+      <arg name="volume" type="i" direction="out"/>
+    </signal>
+    <signal name="openMode">
+      <arg name="mode" type="i" direction="out"/>
+    </signal>
+    <signal name="titleChanged">
+    </signal>
+    <signal name="artistChanged">
+    </signal>
+    <signal name="coverChanged">
+    </signal>
+    <signal name="videoNameChanged">
+    </signal>
+    <signal name="visibleChanged">
+    </signal>
+    <method name="onMusicTitleChanged">
+      <arg name="title" type="s" direction="in"/>
+    </method>
+    <method name="onArtistChanged">
+      <arg name="artist" type="s" direction="in"/>
+    </method>
+    <method name="onCoverChanged">
+      <arg name="have" type="b" direction="in"/>
+    </method>
+    <method name="onVideoChanged">
+      <arg name="videoName" type="s" direction="in"/>
+    </method>
+    <method name="returnHome">
+    </method>
+  </interface>
+</node>

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/components/BaseButton.qml</file>
+        <file>qml/components/BaseText.qml</file>
+        <file>qml/components/ScrollingText.qml</file>
+        <file>qml/components/StatusBar.qml</file>
+        <file>qml/screens/MusicListScreen.qml</file>
+        <file>qml/screens/MusicPlaybackScreen.qml</file>
+        <file>qml/screens/VideoPlaybackScreen.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/components/MediaControllerBar.qml</file>
+        <file>qml/components/MediaSlider.qml</file>
+    </qresource>
+</RCC>

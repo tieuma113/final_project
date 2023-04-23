@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/btn_back.png</file>
+        <file>images/btn_full.png</file>
+        <file>images/btn_home.png</file>
+        <file>images/btn_list.png</file>
+        <file>images/icon_music.png</file>
+        <file>images/icon_video.png</file>
+        <file>images/icon_setup.png</file>
+        <file>images/coverart_sample.png</file>
+        <file>images/icon_next.png</file>
+        <file>images/icon_pause.png</file>
+        <file>images/icon_play.png</file>
+        <file>images/icon_prev.png</file>
+        <file>images/minus.png</file>
+        <file>images/add.png</file>
+    </qresource>
+</RCC>
