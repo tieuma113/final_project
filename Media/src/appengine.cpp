@@ -1,7 +1,7 @@
 #include "appengine.h"
 #include "screencontroller.h"
 #include "musicplayercontroller.h"
-#include "musiclistcontroller.h"
+//#include "musiclistcontroller.h"
 #include "videoplayercontroller.h"
 #include "settingcontroller.h"
 #include "jsonmodel.h"
@@ -63,7 +63,7 @@ void AppEngine::createControllers()
     LOG_INFO << "=> Start";
     ScreenController::getInstance();
     MusicPlayerController::getInstance();
-    MusicListController::getInstance();
+//    MusicListController::getInstance();
     VideoPlayerController::getInstance();
     SettingController::getInstance();
     JsonModel::getInstance();
@@ -76,31 +76,31 @@ void AppEngine::initControllers()
     LOG_INFO << "=> Start";
     ScreenController::getInstance()->initialize(m_engine.rootContext());
     MusicPlayerController::getInstance()->initialize(m_engine.rootContext());
-    MusicListController::getInstance()->initialize(m_engine.rootContext());
+//    MusicListController::getInstance()->initialize(m_engine.rootContext());
     VideoPlayerController::getInstance()->initialize(m_engine.rootContext());
     SettingController::getInstance()->initialize(m_engine.rootContext());
     JsonModel::getInstance()->initiallize(m_engine.rootContext());
     d_busController::getInstance()->initialize(m_engine.rootContext());
 
-    connect(MusicPlayerController::getInstance(),
-            &MusicPlayerController::modelMusicEnd,
-            MusicListController::getInstance(),
-            &MusicListController::setModelNextIndex);
+//    connect(MusicPlayerController::getInstance(),
+//            &MusicPlayerController::modelMusicEnd,
+//            MusicListController::getInstance(),
+//            &MusicListController::setModelNextIndex);
 
-    connect(MusicPlayerController::getInstance(),
-            &MusicPlayerController::setNextSong,
-            MusicListController::getInstance(),
-            &MusicListController::setModelNextIndex);
+//    connect(MusicPlayerController::getInstance(),
+//            &MusicPlayerController::setNextSong,
+//            MusicListController::getInstance(),
+//            &MusicListController::setModelNextIndex);
 
-    connect(MusicPlayerController::getInstance(),
-            &MusicPlayerController::setPrevSong,
-            MusicListController::getInstance(),
-            &MusicListController::setModelPrevIndex);
+//    connect(MusicPlayerController::getInstance(),
+//            &MusicPlayerController::setPrevSong,
+//            MusicListController::getInstance(),
+//            &MusicListController::setModelPrevIndex);
 
-    connect(MusicListController::getInstance(),
-            &MusicListController::modelIndexChanged,
-            MusicPlayerController::getInstance(),
-            &MusicPlayerController::setNewSong);
+//    connect(MusicListController::getInstance(),
+//            &MusicListController::modelIndexChanged,
+//            MusicPlayerController::getInstance(),
+//            &MusicPlayerController::setNewSong);
 
     connect(JsonModel::getInstance(),
             &JsonModel::readData,
@@ -148,7 +148,7 @@ void AppEngine::initControllers()
             &SettingController::setVisible);
 
     JsonModel::getInstance()->readSetting();
-    MusicListController::getInstance()->setModelIndex(0);
+//    MusicListController::getInstance()->setModelIndex(0);
 
 
     LOG_INFO << "=> End";
@@ -165,7 +165,7 @@ void AppEngine::settingMode(int mode){
     m_mode = mode;
     ScreenController::getInstance()->setMode(mode);
     MusicPlayerController::getInstance()->setMode(mode);
-    MusicListController::getInstance()->setMode(mode);
+//    MusicListController::getInstance()->setMode(mode);
     VideoPlayerController::getInstance()->setMode(mode);
 
     SettingController::getInstance()->setVisible(true);

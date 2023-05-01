@@ -33,14 +33,8 @@ private:
     static MusicPlayerController *m_instance;
     bool m_initialized;
 
-
-signals:
-    void modelMusicEnd();
-    void setNextSong();
-    void setPrevSong();
-
 public slots:
-    Q_INVOKABLE void setNewSong(QUrl musicPath);
+    Q_INVOKABLE void setNewSong();
     Q_INVOKABLE void pauseSong();
     Q_INVOKABLE void continueSong();
     Q_INVOKABLE void changePosition(qint64 pos);

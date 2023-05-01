@@ -10,7 +10,7 @@ MusicPlaybackModel::MusicPlaybackModel(QObject *parent)
 {
     m_player = new QMediaPlayer();
     m_state = QMediaPlayer::StoppedState;
-    m_currentUrl = "";
+    m_mediaPlaylist = new QMediaPlaylist();
     connect(m_player,
             &QMediaPlayer::stateChanged,
             this,
@@ -36,13 +36,28 @@ MusicPlaybackModel::~MusicPlaybackModel(){
     m_player->setMedia(nullptr);
 }
 
-void MusicPlaybackModel::setSong(QUrl musicPath){
+void MusicPlaybackModel::initialize(){
     LOG_INFO << "Request play";
-    if (m_currentUrl == musicPath){
-        return;
+    QDir m_dir(MUSIC_PATH);
+    if (!m_dir.exists()){
+        LOG_INFO << "dir not exists";
+    }else{
+        m_dir.setFilter(QDir::Files);
+        m_dir.setNameFilters(QStringList()<<("*.mp3"));
+        m_dir.setSorting(QDir::Name);
+        m_dir.sorting();
+        QFileInfoList fileinfoList = m_dir.entryInfoList();
+        if (fileinfoList.count() == 0){
+            LOG_INFO << "no music file";
+        }else{
+//            setIndex(0);
+            for (auto const &info : fileinfoList)
+            {
+                m_mediaPlaylist->addMedia(QUrl::fromLocalFile(info.absoluteFilePath()));
+            }
+        }
     }
-    m_currentUrl = musicPath;
-    m_player->setMedia(m_currentUrl);
+    m_player->setPlaylist(m_mediaPlaylist);
     m_msDuration = 0;
     m_title = "";
     m_artist = "";
@@ -105,6 +120,16 @@ QString MusicPlaybackModel::valuePosition(){
         currentTime = convert.toString("mm:ss");
     }
     return currentTime;
+}
+
+void MusicPlaybackModel::nextMusic()
+{
+    m_player->playlist()->next();
+}
+
+void MusicPlaybackModel::previousMusic()
+{
+    m_player->playlist()->previous();
 }
 
 void MusicPlaybackModel::onMetaDataChanged(const QString &key, const QVariant &value){

@@ -28,7 +28,6 @@ void MusicPlayerController::initialize(QQmlContext *context){
         m_initialized = true;
         context->setContextProperty("MPLAYER_CTRL", this);
         context->setContextProperty("MPLAYER_MODEL", &m_model);
-        connect(&m_model, &MusicPlaybackModel::musicEnd, this, &MusicPlayerController::modelMusicEnd);
     }
 }
 
@@ -37,9 +36,9 @@ void MusicPlayerController::pauseSong(){
     m_model.requestPause();
 }
 
-void MusicPlayerController::setNewSong(QUrl musicPath){
+void MusicPlayerController::setNewSong(){
     LOG_INFO;
-    m_model.setSong(musicPath);
+    m_model.initialize();
     if (m_mode == AppEnums::APP_MUSIC){
         playSong();
     }
@@ -57,12 +56,12 @@ void MusicPlayerController::continueSong(){
 
 void MusicPlayerController::nextSong(){
     LOG_INFO;
-    emit setNextSong();
+    m_model.nextMusic();
 }
 
 void MusicPlayerController::prevSong(){
     LOG_INFO;
-    emit setPrevSong();
+    m_model.previousMusic();
 }
 
 void MusicPlayerController::changePosition(qint64 pos){

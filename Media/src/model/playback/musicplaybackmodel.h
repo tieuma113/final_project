@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QMediaPlayer>
 #include <QMediaMetaData>
+#include <QFileInfoList>
+#include <QMediaPlaylist>
+#include <QDir>
 
 class MusicPlaybackModel : public QObject
 {
@@ -22,7 +25,7 @@ public:
     MusicPlaybackModel(QObject *parent = nullptr);
     ~MusicPlaybackModel();
 
-    void setSong(QUrl path);
+    void initialize();
     void requestPlay();
     void requestPause();
     void requestContinue();
@@ -37,6 +40,8 @@ public:
     bool isPlay();
     void stop();
     QString valuePosition();
+    void nextMusic();
+    void previousMusic();
 
 signals:
     void musicEnd();
@@ -58,7 +63,8 @@ public slots:
 private:
     QMediaPlayer *m_player;
     QMediaPlayer::State m_state;
-    QUrl m_currentUrl;
+    QMediaPlaylist* m_mediaPlaylist;
+//    QUrl m_currentUrl;
     QString m_title;
     QString m_artist;
     QString m_album;
