@@ -109,11 +109,11 @@ void AppEngine::initControllers()
 
     connect(SettingController::getInstance(),
             &SettingController::volumeChanged,
-            MusicPlayerController::getInstance(),
-            &MusicPlayerController::setVolume);
+            MusicPlayerController::getInstance()->m_model,
+            &MusicPlaybackModel::setVolume);
 
-    connect(&MusicPlayerController::getInstance()->m_model,
-            &MusicPlaybackModel::TitleChanged,
+    connect(MusicPlayerController::getInstance()->m_model,
+            &MusicPlaybackModel::titleChanged,
             d_busController::getInstance(),
             &d_busController::musicTitle);
 
@@ -122,15 +122,15 @@ void AppEngine::initControllers()
             d_busController::getInstance(),
             &d_busController::video);
 
-    connect(&MusicPlayerController::getInstance()->m_model,
-            &MusicPlaybackModel::ArtistChanged,
+    connect(MusicPlayerController::getInstance()->m_model,
+            &MusicPlaybackModel::artistChanged,
             d_busController::getInstance(),
             &d_busController::musicArtist);
 
-    connect(&MusicPlayerController::getInstance()->m_model,
-            &MusicPlaybackModel::coverChanged,
-            d_busController::getInstance(),
-            &d_busController::coverArt);
+//    connect(&MusicPlayerController::getInstance()->m_model,
+//            &MusicPlaybackModel::coverChanged,
+//            d_busController::getInstance(),
+//            &d_busController::coverArt);
 
     connect(d_busController::getInstance(),
             &d_busController::modeChanged,

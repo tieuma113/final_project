@@ -1,79 +1,43 @@
 #ifndef MUSICPLAYERMODEL_H
 #define MUSICPLAYERMODEL_H
 
-#include <QObject>
-#include <QMediaPlayer>
-#include <QMediaMetaData>
-#include <QFileInfoList>
-#include <QMediaPlaylist>
-#include <QDir>
+#include "mediaplayer.h"
 
-class MusicPlaybackModel : public QObject
+class MusicPlaybackModel : public MediaPlayer
 {
     Q_OBJECT
-    Q_PROPERTY(QString Title READ getTitle NOTIFY TitleChanged);
-    Q_PROPERTY(QString Artist READ getArtist NOTIFY ArtistChanged);
-    Q_PROPERTY(QString Album READ getAlbum NOTIFY AlbumChanged);
-    Q_PROPERTY(QString Duration READ getDuration NOTIFY DurationChanged)
-    Q_PROPERTY(qint64 msDuration READ getMsDuration NOTIFY DurationChanged)
-    Q_PROPERTY(qint64 position READ getPosition NOTIFY PositionChanged)
-    Q_PROPERTY(QString coverImagePath READ getCoverArtUrl NOTIFY coverChanged)
-    Q_PROPERTY(bool isPlay READ isPlay NOTIFY musicState)
-    Q_PROPERTY(QString valuePosition READ valuePosition NOTIFY valuePositionChanged)
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(QString artist READ artist WRITE setArtist NOTIFY artistChanged)
+    Q_PROPERTY(QString album READ album WRITE setAlbum NOTIFY albumChanged)
+    Q_PROPERTY(QByteArray coverImage READ coverImage WRITE setCoverImage NOTIFY coverImageChanged)
 
 public:
     MusicPlaybackModel(QObject *parent = nullptr);
     ~MusicPlaybackModel();
 
-    void initialize();
-    void requestPlay();
-    void requestPause();
-    void requestContinue();
-    QString getTitle();
-    QString getArtist();
-    QString getAlbum();
-    QString getDuration();
-    qint64 getMsDuration();
-    qint64 getPosition();
-    void changePosition(qint64 pos);
-    QString getCoverArtUrl();
-    bool isPlay();
-    void stop();
-    QString valuePosition();
-    void nextMusic();
-    void previousMusic();
+    QString title() const;
+    void setTitle(const QString &newTitle);
+    QString artist() const;
+    void setArtist(const QString &newArtist);
+    QString album() const;
+    void setAlbum(const QString &newAlbum);
+    QByteArray coverImage() const;
+    void setCoverImage(const QByteArray &newCoverImage);
 
 signals:
-    void musicEnd();
-    void coverChanged(bool have);
-    void TitleChanged(QString title);
-    void ArtistChanged(QString artist);
-    void AlbumChanged();
-    void DurationChanged();
-    void PositionChanged();
-    void musicState();
-    void valuePositionChanged();
+
+    void titleChanged(QString sTitle);
+    void artistChanged(QString sArtist);
+    void albumChanged(QString sAlbum);
+    void coverImageChanged(QByteArray sCoverImage);
 
 public slots:
-    void handlePlayingTimeChanged(qint64 position);
-    void handleMediaStatus(QMediaPlayer::MediaStatus status);
-    void onMetaDataChanged(const QString &key, const QVariant &value);
-    void handleStateChanged(QMediaPlayer::State state);
-    void setVolume(int volume);
+    void onMediaChanged();
 private:
-    QMediaPlayer *m_player;
-    QMediaPlayer::State m_state;
-    QMediaPlaylist* m_mediaPlaylist;
-//    QUrl m_currentUrl;
     QString m_title;
     QString m_artist;
     QString m_album;
-    QString m_duration;
-    qint64 m_msDuration;
-    qint64 m_position;
-    QString m_coverImageUrl;
-    QString m_positionValue;
-    bool m_isPlay;
+    QByteArray m_coverImage;
 };
 
 #endif // MUSICPLAYERMODEL_H

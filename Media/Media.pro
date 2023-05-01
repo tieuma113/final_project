@@ -31,7 +31,8 @@ HEADERS += \
     src/controller/settingcontroller.h \
     src/controller/videoplayercontroller.h \
     src/model/jsonmodel.h \
-    src/model/list/musiclistmodel.h \
+    src/model/list/medialistmodel.h \
+    src/model/playback/mediaplayer.h \
     src/model/playback/musicplaybackmodel.h \
     src/model/playback/videoplaybackmodel.h \
     src/model/screenmodel.h \
@@ -47,7 +48,8 @@ SOURCES += \
     src/controller/videoplayercontroller.cpp \
     src/main.cpp \
     src/model/jsonmodel.cpp \
-    src/model/list/musiclistmodel.cpp \
+    src/model/list/medialistmodel.cpp \
+    src/model/playback/mediaplayer.cpp \
     src/model/playback/musicplaybackmodel.cpp \
     src/model/playback/videoplaybackmodel.cpp \
     src/model/screenmodel.cpp \

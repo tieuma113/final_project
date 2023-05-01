@@ -22,23 +22,12 @@ public:
 
     void initialize(QQmlContext *context);
     void setMode(int mode);
-    MusicPlaybackModel m_model;
-
-    Q_INVOKABLE void nextSong();
-    Q_INVOKABLE void prevSong();
-    Q_INVOKABLE void playSong();
-
+    MusicPlaybackModel* m_model;
 
 private:
     static MusicPlayerController *m_instance;
     bool m_initialized;
 
-public slots:
-    Q_INVOKABLE void setNewSong();
-    Q_INVOKABLE void pauseSong();
-    Q_INVOKABLE void continueSong();
-    Q_INVOKABLE void changePosition(qint64 pos);
-    Q_INVOKABLE void setVolume(int volume);
 };
 
 #endif // MUSICPLAYERCONTROLLER_H

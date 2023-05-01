@@ -40,12 +40,12 @@ Item {
             bottom: root.bottom
             margins: 5
         }
-        model: MLIST_MODEL
+        model: MPLAYER_MODEL.playList
         delegate: Item{
             width: root.width
             height: 60
             Rectangle{
-                property bool selected: MLIST_MODEL.selectedIndex === index ? true : false
+                property bool selected: MPLAYER_MODEL.playList.getIndex() === index ? true : false
                 anchors{
                     fill: parent
                 }
@@ -73,7 +73,7 @@ Item {
                     anchors.fill: parent
                     onClicked: {
                         if (!parent.selected){
-                            MLIST_CTRL.setModelIndex(index);
+                            MPLAYER_MODEL.playList.setIndex(index);
                         }
                         SCREEN_CTRL.popScreen();
                     }

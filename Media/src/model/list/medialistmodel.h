@@ -1,24 +1,25 @@
-#ifndef MUSICLISTMODEL_H
-#define MUSICLISTMODEL_H
+#ifndef MEDIALISTMODEL_H
+#define MEDIALISTMODEL_H
 
 #include <QAbstractListModel>
 #include <QDir>
+#include <QString>
 #include <QFileInfo>
-#include <QUrl>
+#include <QMediaPlaylist>
 #include "appdefines.h"
 
-class MusicListModel : public QAbstractListModel
+class MediaListModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int selectedIndex READ getIndex WRITE setIndex NOTIFY indexChanged)
 
 private:
-    QFileInfoList m_data;
-    QDir m_dir;
-    int m_index;
+    QMediaPlaylist *m_data;
 
 public:
-    explicit MusicListModel(QObject *parent = nullptr);
+    explicit MediaListModel(QObject *parent = nullptr);
+    void setMediaList(QString mediaPath, QStringList filter);
+    ~MediaListModel();
     enum ModeRoles{
         FileName = Qt::UserRole + 1,
     };
@@ -28,12 +29,11 @@ public:
 
     Q_INVOKABLE int getIndex() const;
     Q_INVOKABLE void setIndex(const int &index);
-
-    void setNextIndex();
-    void setPrevIndex();
+    void setData(QMediaPlaylist *newData);
+    QMediaPlaylist* getData();
 
 signals:
-    void indexChanged(QUrl musicPath);
+    void indexChanged();
 };
 
-#endif // MUSICLISTMODEL_H
+#endif // MEDIALISTMODEL_H
