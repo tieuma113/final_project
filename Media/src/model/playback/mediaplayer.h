@@ -16,8 +16,8 @@ class MediaPlayer : public QObject
     Q_OBJECT
     Q_PROPERTY(QMediaPlayer *player READ player WRITE setPlayer NOTIFY playerChanged)
     Q_PROPERTY(MediaListModel *playList READ playList NOTIFY playListChanged)
-    Q_PROPERTY(QString duration READ duration WRITE setDuration NOTIFY durationChanged)
-    Q_PROPERTY(QString position READ position WRITE setPosition NOTIFY positionChanged)
+    Q_PROPERTY(qint64 duration READ duration WRITE setDuration NOTIFY durationChanged)
+    Q_PROPERTY(int position READ position WRITE setPosition NOTIFY positionChanged)
 
 public:
     explicit MediaPlayer(QObject *parent = nullptr);
@@ -27,10 +27,10 @@ public:
     virtual QMediaPlayer *player() const;
     virtual void setPlayer(QMediaPlayer *newPlayer);
     virtual MediaListModel *playList() const;
-    virtual QString duration() const;
-    virtual void setDuration(const QString &newDuration);
-    virtual QString position() const;
-    virtual void setPosition(const QString &newPosition);
+    virtual qint64 duration() const;
+    virtual void setDuration(const int &newDuration);
+    virtual int position() const;
+    virtual void setPosition(const int &newPosition);
 
 signals:
     void playerChanged();
@@ -39,16 +39,18 @@ signals:
     void positionChanged();
 
 public slots:
-    virtual void onDurationChanged(qint64 duration);
+    virtual void onPositionChanged(int pos);
+    virtual void onDurationChanged(int dur);
     virtual void setVolume(int volume);
 
 protected:
     QMediaPlayer *m_player;
     MediaListModel *m_playList;
-    QString m_duration;
-    QString m_position;
+    qint64 m_duration;
+    int m_position;
     bool m_initialized;
 };
 
 Q_DECLARE_METATYPE(QMediaPlayer*)
+Q_DECLARE_METATYPE(QMediaPlaylist*)
 #endif // MEDIAPLAYER_H

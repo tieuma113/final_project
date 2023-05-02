@@ -6,10 +6,10 @@
 class MusicPlaybackModel : public MediaPlayer
 {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-    Q_PROPERTY(QString artist READ artist WRITE setArtist NOTIFY artistChanged)
-    Q_PROPERTY(QString album READ album WRITE setAlbum NOTIFY albumChanged)
-    Q_PROPERTY(QByteArray coverImage READ coverImage WRITE setCoverImage NOTIFY coverImageChanged)
+    Q_PROPERTY(QString Title READ title WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(QString Artist READ artist WRITE setArtist NOTIFY artistChanged)
+    Q_PROPERTY(QString Album READ album WRITE setAlbum NOTIFY albumChanged)
+    Q_PROPERTY(QByteArray CoverImage READ coverImage WRITE setCoverImage NOTIFY coverImageChanged)
 
 public:
     MusicPlaybackModel(QObject *parent = nullptr);

@@ -182,11 +182,4 @@ Item {
             MPLAYER_MODEL.player.setPosition(pos);
         }
     }
-
-//    Connections {
-//        target: MPLAYER_MODEL
-//        onDurationChanged: {
-//            contrllSlider.duration = MPLAYER_MODEL.duration
-//        }
-//    }
 }

@@ -59,10 +59,10 @@ QVariant MediaListModel::data(const QModelIndex &index, int role) const{
     if (!index.isValid())
         return QVariant();
 
-    if (role == Qt::DisplayRole || role == Qt::UserRole) {
-        return QVariant::fromValue(m_data->media(index.row()));
+    if (role == FileName) {
+        QMediaContent media = m_data->media(index.row());
+        return media.request().url().fileName();
     }
-
     return QVariant();
 }
 
@@ -75,8 +75,18 @@ void MediaListModel::setIndex(const int &index){
         LOG_INFO << "out of number in media list";
         return;
     }
-        m_data->setCurrentIndex(index);
-        emit indexChanged();
-        LOG_INFO << index;
+    m_data->setCurrentIndex(index);
+    emit indexChanged();
+    LOG_INFO << index;
     return;
+}
+
+void MediaListModel::next()
+{
+    m_data->next();
+}
+
+void MediaListModel::previous()
+{
+    m_data->previous();
 }

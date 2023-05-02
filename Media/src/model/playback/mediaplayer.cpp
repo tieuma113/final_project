@@ -7,6 +7,8 @@ MediaPlayer::MediaPlayer(QObject *parent)
 {
     m_player = new QMediaPlayer();
     m_playList = new MediaListModel();
+    connect(m_player, &QMediaPlayer::positionChanged,
+            this, &MediaPlayer::onPositionChanged);
     connect(m_player, &QMediaPlayer::durationChanged,
             this, &MediaPlayer::onDurationChanged);
 }
@@ -21,7 +23,7 @@ void MediaPlayer::setMedia(QString path, QStringList filter)
 {
     m_playList->setMediaList(path, filter);
     m_player->setPlaylist(m_playList->getData());
-    m_duration = "";
+    m_duration = 0;
 }
 
 QMediaPlayer *MediaPlayer::player() const
@@ -42,12 +44,12 @@ MediaListModel *MediaPlayer::playList() const
     return m_playList;
 }
 
-QString MediaPlayer::duration() const
+qint64 MediaPlayer::duration() const
 {
     return m_duration;
 }
 
-void MediaPlayer::setDuration(const QString &newDuration)
+void MediaPlayer::setDuration(const int &newDuration)
 {
     if (m_duration == newDuration)
         return;
@@ -55,30 +57,26 @@ void MediaPlayer::setDuration(const QString &newDuration)
     emit durationChanged();
 }
 
-QString MediaPlayer::position() const
+int MediaPlayer::position() const
 {
     return m_position;
 }
 
-void MediaPlayer::setPosition(const QString &newPosition)
+void MediaPlayer::setPosition(const int &newPosition)
 {
-    if (m_position == newPosition)
-        return;
     m_position = newPosition;
     emit positionChanged();
 }
 
-void MediaPlayer::onDurationChanged(qint64 duration)
+void MediaPlayer::onPositionChanged(int pos)
 {
-    QTime tempDuration = QTime(0,0).addMSecs(duration);
-    if(duration > 216000)
-    {
-        m_duration = tempDuration.toString("hh:mm:ss");
-    }
-    else
-    {
-        m_duration = tempDuration.toString("mm:ss");
-    }
+    m_position = pos;
+    emit positionChanged();
+}
+
+void MediaPlayer::onDurationChanged(int dur)
+{
+    m_duration = dur;
     emit durationChanged();
 }
 

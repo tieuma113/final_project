@@ -29,6 +29,9 @@ public:
 
     Q_INVOKABLE int getIndex() const;
     Q_INVOKABLE void setIndex(const int &index);
+    Q_INVOKABLE void next();
+    Q_INVOKABLE void previous();
+
     void setData(QMediaPlaylist *newData);
     QMediaPlaylist* getData();
 
