@@ -8,9 +8,19 @@ MusicPlaybackModel::MusicPlaybackModel(QObject *parent) : MediaPlayer(parent)
     m_album = "";
     m_artist = "";
     m_title = "";
-    m_coverImage = "";
-    connect(m_player, &QMediaPlayer::mediaChanged, this, &MusicPlaybackModel::onMediaChanged);
-
+    connect(m_player, SIGNAL(metaDataChanged(const QString &, const QVariant &)), this, SLOT(onMediaChanged(const QString &, const QVariant &)));
+    connect(m_player, &QMediaPlayer::currentMediaChanged, this, [this](){
+        LOG_INFO;
+        m_album = "";
+        m_artist = "";
+        m_title = "";
+        QFileInfo temp(MUSIC_UNKNOWN_COVER_ART_PATH);
+        m_coverImage = QUrl::fromLocalFile(temp.absoluteFilePath()).toString();
+        emit titleChanged(m_title);
+        emit artistChanged(m_artist);
+        emit titleChanged(m_title);
+        emit coverImageChanged(m_coverImage);
+    });
 }
 
 MusicPlaybackModel::~MusicPlaybackModel()
@@ -57,12 +67,12 @@ void MusicPlaybackModel::setAlbum(const QString &newAlbum)
     emit albumChanged(m_album);
 }
 
-QByteArray MusicPlaybackModel::coverImage() const
+QUrl MusicPlaybackModel::coverImage() const
 {
     return m_coverImage;
 }
 
-void MusicPlaybackModel::setCoverImage(const QByteArray &newCoverImage)
+void MusicPlaybackModel::setCoverImage(const QUrl &newCoverImage)
 {
     if (m_coverImage == newCoverImage)
         return;
@@ -70,14 +80,29 @@ void MusicPlaybackModel::setCoverImage(const QByteArray &newCoverImage)
     emit coverImageChanged(m_coverImage);
 }
 
-void MusicPlaybackModel::onMediaChanged()
+void MusicPlaybackModel::onMediaChanged(const QString &key, const QVariant &value)
 {
-    m_title = m_player->metaData(QMediaMetaData::Title).toString();
-    m_artist = m_player->metaData(QMediaMetaData::AlbumArtist).toString();
-    m_album = m_player->metaData(QMediaMetaData::AlbumTitle).toString();
-    m_coverImage = m_player->metaData(QMediaMetaData::CoverArtImage).value<QByteArray>();;
-    emit titleChanged(m_title);
-    emit artistChanged(m_artist);
-    emit albumChanged(m_album);
-    emit coverImageChanged(m_coverImage);
+    if (key == QMediaMetaData::Title){
+        LOG_INFO << "song title: " << value.toString();
+        m_title = value.toString();
+        emit titleChanged(m_title);
+    }
+    else if (key == QMediaMetaData::ContributingArtist || key == QMediaMetaData::AlbumArtist){
+        LOG_INFO << "song artist" << value.toString();
+        m_artist = value.toString();
+        emit artistChanged(m_artist);
+    }
+    else if(key == QMediaMetaData::AlbumTitle){
+        LOG_INFO << "song album" << value.toString();
+        m_album = value.toString();
+        emit albumChanged(m_album);
+    }
+    else if (key == QMediaMetaData::CoverArtImage){
+        LOG_INFO;
+        QImage cover = value.value<QImage>();
+        cover.save(MUSIC_ART_COVER_PATH);
+        QFileInfo temp(MUSIC_ART_COVER_PATH);
+        m_coverImage = QUrl::fromLocalFile(temp.absoluteFilePath()).toString();
+        emit coverImageChanged(m_coverImage);
+    }
 }

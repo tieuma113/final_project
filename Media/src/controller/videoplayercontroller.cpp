@@ -8,10 +8,12 @@ VideoPlayerController::VideoPlayerController(QObject *parent)
     , m_initialized(false)
 {
     LOG_INFO;
+    m_model = new VideoPlaybackModel();
 }
 
 VideoPlayerController::~VideoPlayerController(){
-
+    delete m_model;
+    m_instance = nullptr;
 }
 
 VideoPlayerController *VideoPlayerController::getInstance()
@@ -27,53 +29,16 @@ void VideoPlayerController::initialize(QQmlContext *context){
     LOG_INFO << m_initialized;
     if (!m_initialized){
         m_initialized = true;
-        context->setContextProperty("MVIDEO_CTRL", this);
-        context->setContextProperty("MVIDEO_MODEL", &m_model);
-        fullScreen(false);
+        m_model->setMedia(VIDEO_PATH, QStringList() << "*mp4");
+        context->setContextProperty("MVIDEO_MODEL", m_model);
     }
 }
 
 void VideoPlayerController::setMode(int mode){
     LOG_INFO << mode;
     if (mode == AppEnums::APP_MUSIC){
-        m_model.requestPause();
+        m_model->player()->stop();
     }else if (mode == AppEnums::APP_VIDEO){
-        m_model.requestPlay();
-        fullScreen(false);
+        m_model->player()->play();
     }
-}
-
-void VideoPlayerController::pauseVideo(){
-    LOG_INFO;
-    m_model.requestPause();
-}
-
-void VideoPlayerController::playVideo(){
-    LOG_INFO;
-    m_model.requestPlay();
-}
-
-void VideoPlayerController::continueVideo(){
-    LOG_INFO;
-    m_model.requestContinue();
-}
-
-void VideoPlayerController::nextVideo(){
-    LOG_INFO;
-    m_model.next();
-}
-
-void VideoPlayerController::prevVideo(){
-    LOG_INFO;
-    m_model.prev();
-}
-
-void VideoPlayerController::fullScreen(bool s_fullScreen)
-{
-    LOG_INFO << s_fullScreen;
-    m_model.setFullScreen(s_fullScreen);
-}
-void VideoPlayerController::changePosition(qint64 pos){
-    LOG_INFO;
-    m_model.changePosition(pos);
 }

@@ -47,14 +47,13 @@ Item {
         width: root.width
         height: MVIDEO_MODEL.fullScreen ? root.height : root.height - statusbar.height
         source: MVIDEO_MODEL
-
         visible: true
     }
 
     Text {
-        visible: !MVIDEO_MODEL.fullScreen
+        visible: !fullScreen
         id: txtFileName
-        text: MVIDEO_MODEL.FileName
+        text: MVIDEO_MODEL.fileName === "" ? "fileName" : MVIDEO_MODEL.fileName
         anchors{
             top: md_controller.bottom
             left: root.left
@@ -67,9 +66,9 @@ Item {
 
     MediaControllerBar{
         id :md_controller
-        visible: !MVIDEO_MODEL.fullScreen
+        visible: !fullScreen
         z: MVIDEO_MODEL.fullScreen ? 0 : 1
-        isPlay: MVIDEO_MODEL.isPlay
+        isPlay: MVIDEO_MODEL.player.state === MediaPlayer.PlayingState
         anchors.horizontalCenter:  root.horizontalCenter
         anchors.bottom: root.bottom
         anchors.bottomMargin: root.height * 2 /10
@@ -77,13 +76,13 @@ Item {
         onClickedBtn: {
             switch(idx){
             case 1:
-                MVIDEO_CTRL.prevVideo();
+                MVIDEO_MODEL.playList.previous();
                 break;
             case 2:
-                !isPlay ? MVIDEO_CTRL.pauseVideo() : MVIDEO_CTRL.continueVideo();
+                !isPlay ? MVIDEO_MODEL.player.pause() : MVIDEO_MODEL.player.play();
                 break;
             case 3:
-                MVIDEO_CTRL.nextVideo();
+                MVIDEO_MODEL.plaList.next();
                 break;
             default:
                 break;
@@ -92,31 +91,12 @@ Item {
     }
 
 
-    MediaSlider{
-        visible: !MVIDEO_MODEL.fullScreen
-        duration: MVIDEO_MODEL.Duration
-        position: MVIDEO_MODEL.position
-        startText: MVIDEO_MODEL.valuePosition
-        to: MVIDEO_MODEL.msDuration
-        id: md_slider
-        anchors{
-            top: txtFileName.bottom
-            topMargin: 15
-            horizontalCenter: root.horizontalCenter
-        }
-        width: root.width - root.width * 1 / 10
-        onChangePosition: {
-            console.debug(pos);
-            MVIDEO_CTRL.changePosition(pos);
-        }
-    }
-
     Timer{
        id: timerFullScreen
-       interval: 15000
+       interval: 5000
        repeat: true
        onTriggered: {
-           MVIDEO_CTRL.fullScreen(true)
+           fullScreen = true
        }
     }
 
@@ -130,9 +110,31 @@ Item {
 
         onClicked: {
             timerFullScreen.restart();
-            if (MVIDEO_MODEL.fullScreen){
-                MVIDEO_CTRL.fullScreen(false)
+            if (fullScreen){
+                fullScreen = false;
             }
         }
     }
+
+    MediaSlider{
+        visible: !fullScreen
+        duration: MVIDEO_MODEL.duration
+        position: MVIDEO_MODEL.position
+        id: md_slider
+        anchors{
+            bottom: parent.bottom
+            bottomMargin: 30
+            horizontalCenter: root.horizontalCenter
+        }
+        width: root.width - root.width * 1 / 10
+        onChangePosition: {
+            console.debug(pos);
+            MVIDEO_MODEL.player.setPosition(pos);
+        }
+    }
+
+    Component.onCompleted: {
+        timerFullScreen.start()
+    }
+
 }

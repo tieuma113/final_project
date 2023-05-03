@@ -19,7 +19,8 @@ Item {
         from: 0
         live: true
         onMoved: {
-                changePosition(valueAt(slideProgress.position));
+            console.log("triggle")
+            changePosition(valueAt(slideProgress.position));
         }
 
     }

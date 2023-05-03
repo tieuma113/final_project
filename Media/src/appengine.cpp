@@ -117,10 +117,10 @@ void AppEngine::initControllers()
             d_busController::getInstance(),
             &d_busController::musicTitle);
 
-    connect(&VideoPlayerController::getInstance()->m_model,
-            &VideoPlaybackModel::fileNameChanged,
-            d_busController::getInstance(),
-            &d_busController::video);
+//    connect(&VideoPlayerController::getInstance()->m_model,
+//            &VideoPlaybackModel::fileNameChanged,
+//            d_busController::getInstance(),
+//            &d_busController::video);
 
     connect(MusicPlayerController::getInstance()->m_model,
             &MusicPlaybackModel::artistChanged,

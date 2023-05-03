@@ -48,9 +48,7 @@ protected:
     MediaListModel *m_playList;
     qint64 m_duration;
     int m_position;
-    bool m_initialized;
 };
 
 Q_DECLARE_METATYPE(QMediaPlayer*)
-Q_DECLARE_METATYPE(QMediaPlaylist*)
 #endif // MEDIAPLAYER_H

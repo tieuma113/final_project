@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQmlContext>
+#include <QVariant>
 #include "videoplaybackmodel.h"
 #include "appdefines.h"
 
@@ -22,10 +23,7 @@ public:
 
     void setMode(int mode);
 
-    Q_INVOKABLE void nextVideo();
-    Q_INVOKABLE void prevVideo();
-    Q_INVOKABLE void fullScreen(bool s_fullScreen);
-    VideoPlaybackModel m_model;
+    VideoPlaybackModel* m_model;
 
 private:
     static VideoPlayerController *m_instance;
@@ -35,10 +33,6 @@ private:
 signals:
 
 public slots:
-    Q_INVOKABLE void playVideo();
-    Q_INVOKABLE void pauseVideo();
-    Q_INVOKABLE void continueVideo();
-    Q_INVOKABLE void changePosition(qint64 pos);
 };
 
 #endif // VIDEOPLAYERCONTROLLER_H
